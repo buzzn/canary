@@ -1,5 +1,6 @@
 {
   "blacklistHosts": ["sentry.io"],
   "screenshotOnRunFailure": false,
-  "video": false
+  "video": false,
+  "defaultCommandTimeout": 10000
 }
