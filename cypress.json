@@ -1,0 +1,5 @@
+{
+  "blacklistHosts": ["sentry.io"],
+  "screenshotOnRunFailure": false,
+  "video": false
+}
