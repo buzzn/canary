@@ -6,3 +6,4 @@ required ENV vars :
 - CYPRESS_SERVER_URL (core-app url)
 - CYPRESS_LOGIN
 - CYPRESS_PASS
+- CYPRESS_MODE (dev/stg)

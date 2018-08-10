@@ -1,0 +1,194 @@
+{
+  "id": 1,
+  "type": "group_localpool",
+  "updated_at": "2018-08-08T11:31:48.546Z",
+  "name": "People Power Group (Testgruppe)",
+  "slug": "people-power-group-testgruppe",
+  "description": "Power to the people!",
+  "start_date": "2016-02-01",
+  "show_object": null,
+  "show_production": null,
+  "show_energy": null,
+  "show_contact": null,
+  "show_display_app": true,
+  "updatable": true,
+  "deletable": false,
+  "createables": [
+    "managers",
+    "organizations",
+    "localpool_processing_contracts",
+    "metering_point_operator_contracts",
+    "localpool_power_taker_contracts",
+    "registers",
+    "persons",
+    "tariffs",
+    "billing_cycles",
+    "devices"
+  ],
+  "incompleteness": {
+    "grid_feeding_register": [
+      "missing metering_point_id"
+    ],
+    "grid_consumption_register": [
+      "missing metering_point_id"
+    ],
+    "bank_account": [
+      "must be filled"
+    ]
+  },
+  "bank_account": null,
+  "power_sources": [
+    "chp",
+    "pv",
+    "water"
+  ],
+  "display_app_url": "http://localhost:2999/people-power-group-testgruppe",
+  "allowed_actions": {
+    "create_metering_point_operator_contract": true,
+    "create_localpool_processing_contract": {
+      "localpool_processing_contract": [
+        "cannot be defined"
+      ]
+    },
+    "create_billing_cycle": true
+  },
+  "next_billing_cycle_begin_date": "2018-01-01",
+  "tariffs": {
+    "array": [
+      {
+        "id": 1,
+        "type": "contract_tariff",
+        "updated_at": "2018-08-08T10:08:52.173Z",
+        "name": "Hausstrom - Standard",
+        "begin_date": "2000-01-01",
+        "last_date": null,
+        "energyprice_cents_per_kwh": 27.9,
+        "baseprice_cents_per_month": 300.0,
+        "number_of_contracts": 18,
+        "updatable": false,
+        "deletable": false
+      },
+      {
+        "id": 2,
+        "type": "contract_tariff",
+        "updated_at": "2018-08-08T10:08:52.177Z",
+        "name": "Hausstrom - Reduziert",
+        "begin_date": "2000-01-01",
+        "last_date": null,
+        "energyprice_cents_per_kwh": 24.9,
+        "baseprice_cents_per_month": 300.0,
+        "number_of_contracts": 0,
+        "updatable": false,
+        "deletable": true
+      },
+      {
+        "id": 5,
+        "type": "contract_tariff",
+        "updated_at": "2018-08-08T10:08:52.561Z",
+        "name": "Standard",
+        "begin_date": "2000-01-01",
+        "last_date": null,
+        "energyprice_cents_per_kwh": 28.9,
+        "baseprice_cents_per_month": 300.0,
+        "number_of_contracts": 1,
+        "updatable": false,
+        "deletable": false
+      }
+    ]
+  },
+  "address": {
+    "id": 50,
+    "type": "address",
+    "updated_at": "2018-08-08T10:08:52.145Z",
+    "street": "Engelstr. 120",
+    "city": "Elsfleth",
+    "zip": "39902",
+    "country": "DE",
+    "updatable": true,
+    "deletable": false
+  },
+  "distribution_system_operator": {
+    "id": 6,
+    "type": "organization_market",
+    "updated_at": "2018-08-08T10:08:40.050Z",
+    "name": "SWM Infrastruktur GmbH \u0026 Co. KG",
+    "phone": "+49 89 2361 4644",
+    "fax": "+49 89 2361 4699",
+    "website": "http://www.swm-infrastruktur.de",
+    "email": "netznutzung@swm.de",
+    "description": null,
+    "updatable": false,
+    "deletable": false
+  },
+  "transmission_system_operator": {
+    "id": 2,
+    "type": "organization_market",
+    "updated_at": "2018-08-08T10:08:40.035Z",
+    "name": "50Hertz Transmission GmbH",
+    "phone": "+49 30 51503782",
+    "fax": "+49 30 51504511",
+    "website": "http://www.50hertz.com/de/",
+    "email": "roman.schuelke@50hertz.com",
+    "description": null,
+    "updatable": false,
+    "deletable": false
+  },
+  "electricity_supplier": {
+    "id": 1,
+    "type": "organization_market",
+    "updated_at": "2018-08-08T10:08:40.029Z",
+    "name": "Buzzn GmbH",
+    "phone": "089 / 32 16 8",
+    "fax": null,
+    "website": "http://www.buzzn.net",
+    "email": "team@buzzn.net",
+    "description": "Purveyor of peoplepower since 2009",
+    "updatable": false,
+    "deletable": false
+  },
+  "owner": {
+    "id": 43,
+    "type": "person",
+    "updated_at": "2018-08-08T10:08:49.763Z",
+    "prefix": "F",
+    "title": "Prof.",
+    "first_name": "Sabine",
+    "last_name": "Powertaker1",
+    "phone": "0474 3550249",
+    "fax": null,
+    "email": "dev+pt1@buzzn.net",
+    "preferred_language": "de",
+    "image": "http://localhost:3000/uploads/person/image/43/medium_d0096ec6c83575373e3a21d129ff8fef.jpg",
+    "customer_number": null,
+    "updatable": true,
+    "deletable": false,
+    "bank_accounts": {
+      "array": [
+        {
+          "id": 3,
+          "type": "bank_account",
+          "updated_at": "2018-08-08T10:08:49.766Z",
+          "holder": "Sabine Powertaker1",
+          "bank_name": "Berliner Volksbank",
+          "bic": "BYLADEM1001",
+          "iban": "DE89370400440532013000",
+          "direct_debit": true,
+          "updatable": true,
+          "deletable": true
+        }
+      ]
+    },
+    "address": {
+      "id": 38,
+      "type": "address",
+      "updated_at": "2018-08-08T10:08:49.649Z",
+      "street": "Carastr. 186",
+      "city": "Hemsbach",
+      "zip": "22739",
+      "country": "DE",
+      "updatable": true,
+      "deletable": true
+    }
+  },
+  "gap_contract_customer": null
+}
