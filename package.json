@@ -11,6 +11,7 @@
     "chance": "^1.0.16",
     "cypress": "^3.1.0",
     "eslint": "^5.2.0",
+    "omit-deep-lodash": "^1.1.2",
     "prettier": "1.14.0"
   },
   "prettier": {

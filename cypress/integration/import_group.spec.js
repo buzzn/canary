@@ -1,5 +1,7 @@
 /// <reference types="Cypress" />
 
+import omitDeep from 'omit-deep-lodash';
+
 describe('Import group', function() {
   before(function() {
     cy.login();
@@ -24,7 +26,7 @@ describe('Import group', function() {
           Authorization: `Bearer ${token}`,
         },
       }).then(response => {
-        expect(response.body).to.deep.eq(groupData);
+        expect(omitDeep(response.body, ['created_at', 'updated_at'])).to.deep.eq(groupData);
       });
     });
   });

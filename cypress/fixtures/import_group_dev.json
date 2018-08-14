@@ -1,7 +1,6 @@
 {
   "id": 1,
   "type": "group_localpool",
-  "updated_at": "2018-08-08T11:31:48.546Z",
   "name": "People Power Group (Testgruppe)",
   "slug": "people-power-group-testgruppe",
   "description": "Power to the people!",
@@ -58,7 +57,6 @@
       {
         "id": 1,
         "type": "contract_tariff",
-        "updated_at": "2018-08-08T10:08:52.173Z",
         "name": "Hausstrom - Standard",
         "begin_date": "2000-01-01",
         "last_date": null,
@@ -71,7 +69,6 @@
       {
         "id": 2,
         "type": "contract_tariff",
-        "updated_at": "2018-08-08T10:08:52.177Z",
         "name": "Hausstrom - Reduziert",
         "begin_date": "2000-01-01",
         "last_date": null,
@@ -84,7 +81,6 @@
       {
         "id": 5,
         "type": "contract_tariff",
-        "updated_at": "2018-08-08T10:08:52.561Z",
         "name": "Standard",
         "begin_date": "2000-01-01",
         "last_date": null,
@@ -99,10 +95,9 @@
   "address": {
     "id": 50,
     "type": "address",
-    "updated_at": "2018-08-08T10:08:52.145Z",
-    "street": "Engelstr. 120",
-    "city": "Elsfleth",
-    "zip": "39902",
+    "street": "Martinstr. 117",
+    "city": "Bonn",
+    "zip": "79060",
     "country": "DE",
     "updatable": true,
     "deletable": false
@@ -110,7 +105,6 @@
   "distribution_system_operator": {
     "id": 6,
     "type": "organization_market",
-    "updated_at": "2018-08-08T10:08:40.050Z",
     "name": "SWM Infrastruktur GmbH \u0026 Co. KG",
     "phone": "+49 89 2361 4644",
     "fax": "+49 89 2361 4699",
@@ -123,7 +117,6 @@
   "transmission_system_operator": {
     "id": 2,
     "type": "organization_market",
-    "updated_at": "2018-08-08T10:08:40.035Z",
     "name": "50Hertz Transmission GmbH",
     "phone": "+49 30 51503782",
     "fax": "+49 30 51504511",
@@ -136,7 +129,6 @@
   "electricity_supplier": {
     "id": 1,
     "type": "organization_market",
-    "updated_at": "2018-08-08T10:08:40.029Z",
     "name": "Buzzn GmbH",
     "phone": "089 / 32 16 8",
     "fax": null,
@@ -147,29 +139,38 @@
     "deletable": false
   },
   "owner": {
-    "id": 43,
+    "id": 41,
     "type": "person",
-    "updated_at": "2018-08-08T10:08:49.763Z",
-    "prefix": "F",
-    "title": "Prof.",
-    "first_name": "Sabine",
-    "last_name": "Powertaker1",
-    "phone": "0474 3550249",
+    "prefix": "M",
+    "title": "Dr.",
+    "first_name": "Wolfgang",
+    "last_name": "Owner",
+    "phone": "093 7119048",
     "fax": null,
-    "email": "dev+pt1@buzzn.net",
+    "email": "dev+owner@buzzn.net",
     "preferred_language": "de",
-    "image": "http://localhost:3000/uploads/person/image/43/medium_d0096ec6c83575373e3a21d129ff8fef.jpg",
+    "image": "http://localhost:3000/uploads/person/image/41/medium_156005c5baf40ff51a327f1c34f2975b.jpg",
     "customer_number": null,
     "updatable": true,
     "deletable": false,
     "bank_accounts": {
       "array": [
         {
-          "id": 3,
+          "id": 15,
           "type": "bank_account",
-          "updated_at": "2018-08-08T10:08:49.766Z",
-          "holder": "Sabine Powertaker1",
-          "bank_name": "Berliner Volksbank",
+          "holder": "Wolfgang Owner",
+          "bank_name": "UniCredit HypoVereinsbank",
+          "bic": "BYLADEM1001",
+          "iban": "DE89370400440532013000",
+          "direct_debit": true,
+          "updatable": true,
+          "deletable": true
+        },
+        {
+          "id": 1,
+          "type": "bank_account",
+          "holder": "Wolfgang Owner",
+          "bank_name": "Sparkasse München",
           "bic": "BYLADEM1001",
           "iban": "DE89370400440532013000",
           "direct_debit": true,
@@ -179,12 +180,11 @@
       ]
     },
     "address": {
-      "id": 38,
+      "id": 36,
       "type": "address",
-      "updated_at": "2018-08-08T10:08:49.649Z",
-      "street": "Carastr. 186",
-      "city": "Hemsbach",
-      "zip": "22739",
+      "street": "Violettastr. 168",
+      "city": "Schmalkalden",
+      "zip": "94138",
       "country": "DE",
       "updatable": true,
       "deletable": true
