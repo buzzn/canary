@@ -4,7 +4,7 @@ import Chance from 'chance';
 
 const chance = new Chance();
 
-describe('Group', function() {
+describe('Group UI', function() {
   before(function() {
     cy.login();
   });
