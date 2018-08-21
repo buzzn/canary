@@ -47,6 +47,7 @@ describe('Group API', function() {
         expect(allUsers.status).to.eq(200);
         const users = allUsers.body.array;
         const { id, updated_at, ...newContact } = users[0];
+        delete newContact['fax'];
 
         cy.request({
           url: `${Cypress.env('SERVER_URL')}/api/admin/localpools/${groupId}/organization-owner`,
