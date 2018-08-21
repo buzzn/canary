@@ -45,7 +45,7 @@
   "tariffs": {
     "array": [
       {
-        "id": 58,
+        "id": 57,
         "type": "contract_tariff",
         "name": "Tarif 1",
         "begin_date": "2018-08-01",
