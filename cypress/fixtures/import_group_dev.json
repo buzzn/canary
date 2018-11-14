@@ -13,6 +13,8 @@
   "updatable": true,
   "deletable": false,
   "createables": [
+    "meters",
+    "meters_real",
     "managers",
     "organizations",
     "localpool_processing_contracts",
@@ -25,30 +27,17 @@
     "devices"
   ],
   "incompleteness": {
-    "grid_feeding_register": [
-      "missing metering_point_id"
-    ],
-    "grid_consumption_register": [
-      "missing metering_point_id"
-    ],
-    "bank_account": [
-      "must be filled"
-    ]
+    "grid_feeding_register": ["missing metering_point_id"],
+    "grid_consumption_register": ["missing metering_point_id"],
+    "bank_account": ["must be filled"]
   },
   "bank_account": null,
-  "power_sources": [
-    "chp",
-    "pv",
-    "water"
-  ],
+  "power_sources": ["chp", "pv", "water"],
   "display_app_url": "http://localhost:2999/people-power-group-testgruppe",
   "allowed_actions": {
     "create_metering_point_operator_contract": true,
-    "create_localpool_processing_contract": {
-      "localpool_processing_contract": [
-        "cannot be defined"
-      ]
-    },
+    "create_localpool_power_taker_contract": true,
+    "create_localpool_processing_contract": true,
     "create_billing_cycle": true
   },
   "next_billing_cycle_begin_date": "2018-01-01",
@@ -95,18 +84,15 @@
   "address": {
     "id": 50,
     "type": "address",
-    "street": "Martinstr. 117",
-    "city": "Bonn",
-    "zip": "79060",
     "country": "DE",
     "updatable": true,
     "deletable": false
   },
   "distribution_system_operator": {
     "id": 6,
+    "additional_legal_representation": null,
     "type": "organization_market",
     "name": "SWM Infrastruktur GmbH \u0026 Co. KG",
-    "phone": "+49 89 2361 4644",
     "fax": "+49 89 2361 4699",
     "website": "http://www.swm-infrastruktur.de",
     "email": "netznutzung@swm.de",
@@ -116,9 +102,9 @@
   },
   "transmission_system_operator": {
     "id": 2,
+    "additional_legal_representation": null,
     "type": "organization_market",
     "name": "50Hertz Transmission GmbH",
-    "phone": "+49 30 51503782",
     "fax": "+49 30 51504511",
     "website": "http://www.50hertz.com/de/",
     "email": "roman.schuelke@50hertz.com",
@@ -128,9 +114,9 @@
   },
   "electricity_supplier": {
     "id": 1,
+    "additional_legal_representation": null,
     "type": "organization_market",
     "name": "Buzzn GmbH",
-    "phone": "089 / 32 16 8",
     "fax": null,
     "website": "http://www.buzzn.net",
     "email": "team@buzzn.net",
@@ -145,7 +131,6 @@
     "title": "Dr.",
     "first_name": "Wolfgang",
     "last_name": "Owner",
-    "phone": "093 7119048",
     "fax": null,
     "email": "dev+owner@buzzn.net",
     "preferred_language": "de",
@@ -159,7 +144,6 @@
           "id": 15,
           "type": "bank_account",
           "holder": "Wolfgang Owner",
-          "bank_name": "UniCredit HypoVereinsbank",
           "bic": "BYLADEM1001",
           "iban": "DE89370400440532013000",
           "direct_debit": true,
@@ -170,7 +154,6 @@
           "id": 1,
           "type": "bank_account",
           "holder": "Wolfgang Owner",
-          "bank_name": "Sparkasse München",
           "bic": "BYLADEM1001",
           "iban": "DE89370400440532013000",
           "direct_debit": true,
@@ -182,13 +165,12 @@
     "address": {
       "id": 36,
       "type": "address",
-      "street": "Violettastr. 168",
-      "city": "Schmalkalden",
-      "zip": "94138",
       "country": "DE",
       "updatable": true,
       "deletable": true
     }
   },
+  "legacy_power_giver_contract_buzznid": null,
+  "legacy_power_taker_contract_buzznid": null,
   "gap_contract_customer": null
 }

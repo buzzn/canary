@@ -26,7 +26,13 @@ describe('Import group', function() {
           Authorization: `Bearer ${token}`,
         },
       }).then(response => {
-        expect(omitDeep(response.body, ['created_at', 'updated_at'])).to.deep.eq(groupData);
+        if (Cypress.env('MODE') === 'dev') {
+          expect(
+            omitDeep(response.body, ['created_at', 'updated_at', 'phone', 'bank_name', 'city', 'street', 'zip']),
+          ).to.deep.eq(groupData);
+        } else {
+          expect(omitDeep(response.body, ['created_at', 'updated_at'])).to.deep.eq(groupData);
+        }
       });
     });
   });
