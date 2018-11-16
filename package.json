@@ -18,5 +18,8 @@
     "singleQuote": true,
     "trailingComma": "all",
     "printWidth": 120
+  },
+  "dependencies": {
+    "moment": "^2.22.2"
   }
 }
