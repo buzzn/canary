@@ -4,7 +4,7 @@
   "name": "Canary Test Group",
   "slug": "canary-test-group",
   "description": null,
-  "start_date": "2018-01-01",
+  "start_date": "2018-03-21",
   "show_object": null,
   "show_production": null,
   "show_energy": null,
@@ -13,6 +13,8 @@
   "updatable": true,
   "deletable": false,
   "createables": [
+    "meters",
+    "meters_real",
     "managers",
     "organizations",
     "localpool_processing_contracts",
@@ -25,41 +27,43 @@
     "devices"
   ],
   "incompleteness": {
-    "grid_feeding_register": ["missing metering_point_id"],
-    "grid_consumption_register": ["missing metering_point_id"],
+    "grid_feeding_register": ["must be filled"],
+    "grid_consumption_register": ["must be filled"],
     "distribution_system_operator": ["must be filled"],
+    "transmission_system_operator": ["must be filled"],
     "electricity_supplier": ["must be filled"],
     "bank_account": ["must be filled"]
   },
+  "legacy_power_giver_contract_buzznid": "",
+  "legacy_power_taker_contract_buzznid": "90132",
   "bank_account": null,
-  "power_sources": ["pv"],
+  "power_sources": [],
   "display_app_url": null,
   "allowed_actions": {
     "create_metering_point_operator_contract": true,
-    "create_localpool_processing_contract": {
-      "localpool_processing_contract": ["cannot be defined"]
-    },
+    "create_localpool_power_taker_contract": true,
+    "create_localpool_processing_contract": true,
     "create_billing_cycle": true
   },
-  "next_billing_cycle_begin_date": "2018-01-01",
+  "next_billing_cycle_begin_date": "2018-03-21",
   "tariffs": {
     "array": [
       {
-        "id": 57,
+        "id": 68,
         "type": "contract_tariff",
         "name": "Tarif 1",
-        "begin_date": "2018-08-01",
+        "begin_date": "2017-01-01",
         "last_date": null,
-        "energyprice_cents_per_kwh": 25.0,
-        "baseprice_cents_per_month": 600.0,
-        "number_of_contracts": 3,
+        "energyprice_cents_per_kwh": 111,
+        "baseprice_cents_per_month": 1100,
+        "number_of_contracts": 2,
         "updatable": false,
         "deletable": false
       }
     ]
   },
   "address": {
-    "id": 823,
+    "id": 843,
     "type": "address",
     "street": "Am Pfannenstiel 11",
     "city": "Augsburg",
@@ -69,21 +73,10 @@
     "deletable": false
   },
   "distribution_system_operator": null,
-  "transmission_system_operator": {
-    "id": 3,
-    "type": "organization_market",
-    "name": "Tennet TSO GmbH",
-    "phone": "+49 921 507404575",
-    "fax": "+49 921 507404566",
-    "website": "http://www.tennet.eu/de",
-    "email": "uenb-mako@tennet.eu",
-    "description": null,
-    "updatable": false,
-    "deletable": false
-  },
+  "transmission_system_operator": null,
   "electricity_supplier": null,
   "owner": {
-    "id": 767,
+    "id": 783,
     "type": "person",
     "prefix": "M",
     "title": "Dr.",
@@ -101,7 +94,7 @@
       "array": []
     },
     "address": {
-      "id": 822,
+      "id": 842,
       "type": "address",
       "street": "Werderstrasse 25",
       "city": "Augsburg",
