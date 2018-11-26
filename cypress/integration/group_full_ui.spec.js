@@ -29,13 +29,8 @@ describe('Group full UI', function() {
       cy.get('input[name="address.street"]').type(chance.street());
       cy.get('input[name="address.city"]').type(chance.city());
       cy.get('input[name="address.zip"]').type(chance.zip());
-      // cy.screenshot('before_save');
       cy.get('button[type=submit]').click();
-      // cy.screenshot('after_save_1');
     });
-    // cy.screenshot('after_save_2');
-    // cy.visit('/');
-    // cy.screenshot('group_list');
     cy.contains('.cy-group-name', groupName).click();
 
     cy.get('[data-cy="group owner tab"]').click();

@@ -30,7 +30,6 @@ describe('Group UI', function() {
       cy.get('input[name="address.zip"]').type(chance.zip());
       cy.get('button[type=submit]').click();
     });
-    cy.visit('/');
     cy.contains('.cy-group-name', groupName).click();
     cy.get('[data-cy="group edit switch"]').click();
     cy.get('[data-cy="group delete button"]').click();
