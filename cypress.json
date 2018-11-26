@@ -4,6 +4,6 @@
   ],
   "screenshotOnRunFailure": false,
   "video": false,
-  "defaultCommandTimeout": 20000,
+  "defaultCommandTimeout": 30000,
   "projectId": "4pq2hd"
 }
