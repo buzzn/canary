@@ -34,7 +34,7 @@ describe('Group full UI', function() {
       // cy.screenshot('after_save_1');
     });
     // cy.screenshot('after_save_2');
-    cy.visit('/');
+    // cy.visit('/');
     // cy.screenshot('group_list');
     cy.contains('.cy-group-name', groupName).click();
 
