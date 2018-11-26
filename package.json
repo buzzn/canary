@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "cypress:run": "cypress run",
+    "cypress:run:record": "cypress run --record --key e188dbb5-b123-4fea-a226-1c4ed96386ff",
     "cypress:open": "cypress open"
   },
   "devDependencies": {
