@@ -58,6 +58,7 @@ describe('Group full UI', function() {
     cy.get('[data-cy="form button cancel"]').click();
 
     cy.get('[data-cy="sidebar documents"]').click();
+    cy.contains('.cy-number', '/0').should('not.to.exist');
     cy.get('[data-cy="add contract CTA"]').click();
     cy.get('[data-cy="create contract modal"]').within($modal => {
       cy.get('select[name="type"]').select('contract_localpool_processing');
@@ -65,5 +66,34 @@ describe('Group full UI', function() {
       cy.get('input[name="beginDate"]').type(moment().format('DD.MM.YYYY'));
       cy.get('button[type=submit]').click();
     });
+    cy.contains('.cy-type-intl', 'Local Pool Processing').should('exist');
+    cy.contains('.cy-number', '/0').should('exist');
+
+    cy.get('[data-cy="sidebar powertakers"]').click();
+    cy.contains('.cy-number', '/1').should('not.to.exist');
+    cy.get('[data-cy="add powertaker CTA"]').click();
+    const powertakerFName = chance.first();
+    const powertakerLName = chance.last();
+    const registerMetaName = chance.word();
+    cy.get('[data-cy="create powertaker form"]').within($form => {
+      cy.get('[data-cy="powertaker radio person"]').click();
+      cy.get('select[name="customer.prefix"]').select('M');
+      cy.get('select[name="customer.title"]').select('Dr.');
+      cy.get('input[name="customer.firstName"]').type(powertakerFName);
+      cy.get('input[name="customer.lastName"]').type(powertakerLName);
+      cy.get('input[name="customer.address.street"]').type(chance.street());
+      cy.get('input[name="customer.address.city"]').type(chance.city());
+      cy.get('input[name="customer.address.zip"]').type(chance.zip());
+      cy.get('input[name="customer.email"]').type(chance.email());
+
+      cy.get('input[name="beginDate"]').type(moment().format('DD.MM.YYYY'));
+      cy.get('input[name="registerMeta.name"]').type(registerMetaName);
+      cy.get('select[name="registerMeta.label"]').select('CONSUMPTION');
+
+      cy.get('[data-cy="form button save"]').click();
+    });
+    cy.contains('.cy-powertaker', `${powertakerLName} ${powertakerFName}`).should('exist');
+    cy.contains('.cy-malo', registerMetaName).should('exist');
+    cy.contains('.cy-number', '/1').should('exist');
   });
 });
