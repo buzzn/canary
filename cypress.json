@@ -1,6 +1,9 @@
 {
-  "blacklistHosts": ["sentry.io"],
+  "blacklistHosts": [
+    "sentry.io"
+  ],
   "screenshotOnRunFailure": false,
   "video": false,
-  "defaultCommandTimeout": 20000
+  "defaultCommandTimeout": 20000,
+  "projectId": "4pq2hd"
 }
