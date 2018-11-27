@@ -31,7 +31,7 @@ describe('Group full UI', function() {
       cy.get('input[name="address.zip"]').type(chance.zip());
       cy.get('button[type=submit]').click();
     });
-    // cy.visit('/');
+    cy.visit('/');
     cy.get('.cy-groups-list').should('be.visible');
     cy.contains('.cy-group-name', groupName).click();
 
