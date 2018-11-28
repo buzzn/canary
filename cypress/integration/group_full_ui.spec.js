@@ -152,8 +152,14 @@ describe('Group full UI', function() {
       cy.get('[data-cy="form button save"]').click();
     });
     Object.keys(contractChanges).forEach(key => {
-      // check updated contract
-      // cy.contains('.fieldvalue', contractChanges[key]).should('exist');
+      if (typeof contractChanges[key] === 'boolean') {
+        cy.get(`*[name="${key}"]`).should(`${contractChanges[key] === true ? '' : 'not.'}be.checked`);
+      } else if (key === 'registerMeta.label') {
+        // i18n hack
+        cy.contains('.fieldvalue', 'Consumption common').should('exist');
+      } else {
+        cy.contains('.fieldvalue', contractChanges[key]).should('exist');
+      }
     });
   });
 });
