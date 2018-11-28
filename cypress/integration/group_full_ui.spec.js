@@ -96,5 +96,64 @@ describe('Group full UI', function() {
     cy.contains('.cy-powertaker', `${powertakerLName} ${powertakerFName}`).should('exist');
     cy.contains('.cy-malo', registerMetaName).should('exist');
     cy.contains('.cy-number', '/1').should('exist');
+
+    cy.contains('.cy-number', '/1').click();
+    cy.get('[data-cy="contract edit switch"]').click();
+    const contractChanges = {
+      forecastKwhPa: chance.natural({ max: 200000 }),
+      originalSigningUser: chance.name(),
+      mandateReference: chance.word(),
+      confirmPricingModel: true,
+      powerOfAttorney: true,
+      otherContract: true,
+      moveIn: true,
+      authorization: true,
+      meteringPointOperatorName: chance.word(),
+      oldSupplierName: chance.word(),
+      oldCustomerNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
+      oldAccountNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
+      thirdPartyBillingNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
+      thirdPartyRenterNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
+      shareRegisterWithGroup: true,
+      shareRegisterPublicly: true,
+      'registerMeta.name': chance.word(),
+      'registerMeta.label': 'CONSUMPTION_COMMON',
+      signingDate: moment()
+        .add(3, 'day')
+        .format('DD.MM.YYYY'),
+      beginDate: moment()
+        .add(1, 'day')
+        .format('DD.MM.YYYY'),
+      terminationDate: moment()
+        .add(5, 'day')
+        .format('DD.MM.YYYY'),
+      endDate: moment()
+        .add(7, 'day')
+        .format('DD.MM.YYYY'),
+    };
+    cy.get('[data-cy="powertaker contract form"]').within($form => {
+      Object.keys(contractChanges).forEach(key => {
+        cy.get(`*[name="${key}"]`).within($field => {
+          if ($field.prop('type') === 'select-one') {
+            cy.root().select(contractChanges[key]);
+          } else if ($field.prop('type') === 'checkbox') {
+            if (contractChanges[key]) {
+              cy.root().check({ force: true });
+            } else {
+              cy.root().uncheck({ force: true });
+            }
+          } else {
+            cy.root()
+              .clear()
+              .type(contractChanges[key]);
+          }
+        });
+      });
+      cy.get('[data-cy="form button save"]').click();
+    });
+    Object.keys(contractChanges).forEach(key => {
+      // check updated contract
+      // cy.contains('.fieldvalue', contractChanges[key]).should('exist');
+    });
   });
 });
