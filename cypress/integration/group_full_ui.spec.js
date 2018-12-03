@@ -5,6 +5,39 @@ import moment from 'moment';
 
 const chance = new Chance();
 
+const fillForm = dataObj => {
+  Object.keys(dataObj).forEach(key => {
+    cy.get(`*[name="${key}"]`).within($field => {
+      if ($field.prop('type') === 'select-one') {
+        cy.root().select(dataObj[key]);
+      } else if ($field.prop('type') === 'checkbox') {
+        if (dataObj[key]) {
+          cy.root().check({ force: true });
+        } else {
+          cy.root().uncheck({ force: true });
+        }
+      } else {
+        cy.root()
+          .clear()
+          .type(dataObj[key]);
+      }
+    });
+  });
+};
+
+const checkForm = (dataObj, i18nObj) => {
+  Object.keys(dataObj).forEach(key => {
+    if (typeof dataObj[key] === 'boolean') {
+      cy.get(`*[name="${key}"]`).should(`${dataObj[key] === true ? '' : 'not.'}be.checked`);
+    } else if (Object.keys(i18nObj).includes(key)) {
+      // i18n hack
+      cy.contains('.fieldvalue', i18nObj[key]).should('exist');
+    } else {
+      cy.contains('.fieldvalue', dataObj[key]).should('exist');
+    }
+  });
+};
+
 describe('Group full UI', function() {
   before(function() {
     cy.login();
@@ -127,39 +160,102 @@ describe('Group full UI', function() {
       terminationDate: moment()
         .add(5, 'day')
         .format('DD.MM.YYYY'),
-      endDate: moment()
+      lastDate: moment()
         .add(7, 'day')
         .format('DD.MM.YYYY'),
     };
     cy.get('[data-cy="powertaker contract form"]').within($form => {
-      Object.keys(contractChanges).forEach(key => {
-        cy.get(`*[name="${key}"]`).within($field => {
-          if ($field.prop('type') === 'select-one') {
-            cy.root().select(contractChanges[key]);
-          } else if ($field.prop('type') === 'checkbox') {
-            if (contractChanges[key]) {
-              cy.root().check({ force: true });
-            } else {
-              cy.root().uncheck({ force: true });
-            }
-          } else {
-            cy.root()
-              .clear()
-              .type(contractChanges[key]);
-          }
-        });
-      });
+      fillForm(contractChanges);
       cy.get('[data-cy="form button save"]').click();
     });
-    Object.keys(contractChanges).forEach(key => {
-      if (typeof contractChanges[key] === 'boolean') {
-        cy.get(`*[name="${key}"]`).should(`${contractChanges[key] === true ? '' : 'not.'}be.checked`);
-      } else if (key === 'registerMeta.label') {
-        // i18n hack
-        cy.contains('.fieldvalue', 'Consumption common').should('exist');
-      } else {
-        cy.contains('.fieldvalue', contractChanges[key]).should('exist');
-      }
+    checkForm(contractChanges, { 'registerMeta.label': 'Consumption common' });
+
+    cy.get('[data-cy="sidebar documents"]').click();
+    cy.get('[data-cy="add contract CTA"]').click();
+    cy.get('[data-cy="create contract modal"]').within($modal => {
+      cy.get('select[name="type"]').select('contract_metering_point_operator');
+      cy.get('input[name="beginDate"]').type(moment().format('DD.MM.YYYY'));
+      cy.get('button[type=submit]').click();
     });
+    cy.contains('.cy-type-intl', 'Metering Point Operator').should('exist');
+
+    cy.get('[data-cy="sidebar system"]').click();
+    cy.contains('.cy-malo-name', contractChanges['registerMeta.name']).should('exist');
+    cy.get('[data-cy="add malo CTA"]').click();
+    const meterSerial = chance.natural({ min: 1000, max: 9999 });
+    const productionRegister = chance.word();
+    const systemRegister = chance.word();
+    cy.get('[data-cy="create meter form"]').within($form => {
+      cy.get('.cy-registers-0').click();
+      cy.get('.cy-registers-0').within($dropdown => {
+        cy.contains('.cy__option', contractChanges['registerMeta.name']).click();
+      });
+      cy.get('.cy-add-register').as('moarRegisters');
+      cy.get('@moarRegisters').click();
+      cy.get('@moarRegisters').click();
+      cy.get('input[name="registers[1].name"]').type(productionRegister);
+      cy.get('select[name="registers[1].label"]').select('PRODUCTION_PV');
+      cy.get('input[name="registers[2].name"]').type(systemRegister);
+      cy.get('select[name="registers[2].label"]').select('DEMARCATION_PV');
+
+      cy.get('select[name="type"]').select('real');
+      cy.get('input[name="productSerialnumber"]').type(meterSerial);
+      cy.get('select[name="datasource"]').select('standard_profile');
+      cy.get('select[name="manufacturerName"]').select('easy_meter');
+      cy.get('select[name="edifactMeasurementMethod"]').select('MMR');
+
+      cy.get('[data-cy="form button save"]').click();
+    });
+    cy.contains('.cy-meter-serial', meterSerial).should('exist');
+    cy.get('[data-cy="production tab"]').click();
+    cy.contains('.cy-malo-name', productionRegister).should('exist');
+    cy.contains('.cy-meter-serial', meterSerial).should('exist');
+    cy.get('[data-cy="system tab"]').click();
+    cy.contains('.cy-malo-name', systemRegister).should('exist');
+    cy.contains('.cy-meter-serial', meterSerial).should('exist');
+
+    cy.contains('.cy-meter-serial', meterSerial).click();
+    cy.get('[data-cy="meter edit switch"]').click();
+    const meterChanges = {
+      manufacturerDescription: chance.sentence(),
+      productName: chance.word(),
+      ownership: 'CUSTOMER',
+      buildYear: 2017,
+      calibratedUntil: moment()
+        .add(1, 'year')
+        .format('DD.MM.YYYY'),
+      converterConstant: chance.natural({ max: 300 }),
+      locationDescription: chance.sentence(),
+      directionNumber: 'ERZ',
+      productSerialnumber: chance.natural({ min: 1000, max: 9999 }),
+      edifactCycleInterval: 'MONTHLY',
+      edifactDataLogging: 'Z04',
+      edifactMeterSize: 'Z01',
+      edifactMeteringType: 'AHZ',
+      edifactMountingMethod: 'BKE',
+      edifactTariff: 'ETZ',
+      edifactVoltageLevel: 'E06',
+    };
+    cy.get('[data-cy="edit meter form"]').within($form => {
+      fillForm(meterChanges);
+      cy.get('[data-cy="form button save"]').click();
+    });
+    checkForm(meterChanges, { ownership: 'Customer', directionNumber: 'One-Way Meter' });
+
+    cy.get('[data-cy="sidebar system"]').click();
+    cy.contains('.cy-malo-name', contractChanges['registerMeta.name']).click();
+    cy.get('[data-cy="malo edit switch"]').click();
+    const maloChanges = {
+      observerEnabled: true,
+      observerMinThreshold: chance.natural({ max: 1000 }),
+      observerMaxThreshold: chance.natural({ min: 1000, max: 2000 }),
+      observerOfflineMonitoring: true,
+      marketLocationId: chance.string({ length: 11 }),
+    };
+    cy.get('[data-cy="edit malo form"]').within($form => {
+      fillForm(maloChanges);
+      cy.get('[data-cy="form button save"]').click();
+    });
+    checkForm(maloChanges, {});
   });
 });
