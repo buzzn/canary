@@ -259,5 +259,45 @@ describe('Group full UI', function() {
       cy.get('[data-cy="form button save"]').click();
     });
     checkForm(maloChanges, {});
+
+    cy.get('[data-cy="sidebar devices"]').click();
+    cy.get('[data-cy="add device CTA"]').click();
+    const newDevice = {
+      primaryEnergy: 'wind',
+      law: 'eeg',
+      manufacturer: chance.word(),
+      model: chance.word(),
+      name: chance.word(),
+      kwPeak: chance.natural({ max: 9999 }),
+      kwhPerAnnum: chance.natural({ max: 9999 }),
+      commissioning: moment()
+        .add(1, 'year')
+        .format('DD.MM.YYYY'),
+    };
+    cy.get('[data-cy="create device modal"]').within($modal => {
+      fillForm(newDevice);
+      cy.get('button[type=submit]').click();
+    });
+    cy.contains('.cy-name', newDevice.name).click();
+    checkForm(newDevice, { primaryEnergy: 'Wind', law: 'EEG' });
+
+    const deviceChanges = {
+      primaryEnergy: 'sun',
+      law: 'free',
+      manufacturer: chance.word(),
+      model: chance.word(),
+      name: chance.word(),
+      kwPeak: chance.natural({ max: 9999 }),
+      kwhPerAnnum: chance.natural({ max: 9999 }),
+      commissioning: moment()
+        .add(2, 'year')
+        .format('DD.MM.YYYY'),
+    };
+    cy.get('[data-cy="device edit switch"]').click();
+    cy.get('[data-cy="edit device form"]').within($form => {
+      fillForm(deviceChanges);
+      cy.get('[data-cy="form button save"]').click();
+    });
+    checkForm(deviceChanges, { primaryEnergy: 'Sun', law: 'Free' });
   });
 });
