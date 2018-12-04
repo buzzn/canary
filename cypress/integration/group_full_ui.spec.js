@@ -66,7 +66,7 @@ describe('Group full UI', function() {
     });
     cy.contains('.fieldvalue', groupName).should('exist');
 
-    cy.visit('/');
+    cy.get('[data-cy="home link"]').click();
     cy.get('.cy-groups-list').should('be.visible');
     cy.contains('.cy-group-name', groupName).click();
 

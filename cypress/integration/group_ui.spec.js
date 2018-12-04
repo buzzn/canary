@@ -32,7 +32,7 @@ describe('Group UI', function() {
     });
     cy.contains('.fieldvalue', groupName).should('exist');
 
-    cy.visit('/');
+    cy.get('[data-cy="home link"]').click();
     cy.get('.cy-groups-list').should('be.visible');
     cy.contains('.cy-group-name', groupName).click();
     cy.get('[data-cy="group edit switch"]').click();
@@ -43,7 +43,7 @@ describe('Group UI', function() {
         .contains('Delete')
         .click();
     });
-    cy.visit('/');
+    cy.get('[data-cy="home link"]').click();
     cy.get('.cy-groups-list').should('be.visible');
     cy.contains('.cy-group-name', groupName).should('not.to.exist');
   });
