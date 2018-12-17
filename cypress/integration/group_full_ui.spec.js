@@ -322,5 +322,23 @@ describe('Group full UI', function() {
       cy.get('[data-cy="form button save"]').click();
     });
     checkForm(deviceChanges, { primaryEnergy: 'Sun', law: 'Free' });
+
+    cy.get('[data-cy="sidebar powertakers"]').click();
+    cy.get('[data-cy="contract billings tab"]').click();
+    cy.get('[data-cy="add billing CTA"]').click();
+    const newBilling = {
+      beginDate: moment()
+        .subtract(1, 'week')
+        .format('DD.MM.YYYY'),
+      lastDate: moment().format('DD.MM.YYYY'),
+      status: 'calculated',
+      invoiceNumber: chance.word(),
+    };
+    cy.get('[data-cy="create billing modal"]').within($modal => {
+      fillForm(newBilling);
+      cy.get('button[type=submit]').click();
+    });
+    cy.contains('.cy-invoice-number', newBilling.invoiceNumber).should('exist');
+    cy.contains('.cy-begin-date', newBilling.beginDate).should('exist');
   });
 });
