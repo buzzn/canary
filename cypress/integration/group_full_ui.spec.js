@@ -260,6 +260,29 @@ describe('Group full UI', function() {
     });
     checkForm(maloChanges, {});
 
+    cy.get('[data-cy="malo registers tab"]').click();
+    //FIXME: get obit from obj
+    cy.contains('.cy-obis', '1-1:1.8.0').click();
+    cy.get('[data-cy="register readings tab"]').click();
+    cy.get('[data-cy="add reading CTA"]').click();
+    const newReading = {
+      rawValue: chance.natural({ max: 999 }),
+      value: chance.natural({ max: 999 }),
+      unit: 'Wh',
+      reason: 'PMR',
+      readBy: 'BN',
+      quality: '220',
+      source: 'MAN',
+      status: 'Z83',
+      date: moment().format('DD.MM.YYYY'),
+    };
+    cy.get('[data-cy="create reading modal"]').within($modal => {
+      fillForm(newReading);
+      cy.get('button[type=submit]').click();
+    });
+    cy.contains('.cy-date', newReading.date).should('exist');
+    cy.contains('.cy-reason', newReading.reason).should('exist');
+
     cy.get('[data-cy="sidebar devices"]').click();
     cy.get('[data-cy="add device CTA"]').click();
     const newDevice = {
