@@ -323,7 +323,25 @@ describe('Group full UI', function() {
     });
     checkForm(deviceChanges, { primaryEnergy: 'Sun', law: 'Free' });
 
+    cy.get('[data-cy="sidebar tariffs"]').click();
+    cy.get('[data-cy="add tariff CTA"]').click();
+    const newTariff = {
+      name: chance.word(),
+      beginDate: moment()
+        .subtract(1, 'week')
+        .format('DD.MM.YYYY'),
+      energypriceCentsPerKwh: chance.natural(),
+      basepriceCentsPerMonth: chance.natural(),
+    };
+    cy.get('[data-cy="create tariff modal"]').within($modal => {
+      fillForm(newTariff);
+      cy.get('button[type=submit]').click();
+    });
+    cy.contains('.cy-name', newTariff.name).should('exist');
+    cy.contains('.cy-begin-date', newTariff.beginDate).should('exist');
+
     cy.get('[data-cy="sidebar powertakers"]').click();
+    cy.contains('.cy-number', '/1').click();
     cy.get('[data-cy="contract billings tab"]').click();
     cy.get('[data-cy="add billing CTA"]').click();
     const newBilling = {
