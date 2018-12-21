@@ -343,6 +343,9 @@ describe('Group full UI', function() {
     cy.get('[data-cy="sidebar powertakers"]').click();
     cy.contains('.cy-number', '/1').click();
     cy.get('[data-cy="contract billings tab"]').click();
+    cy.get('[data-cy="manage tariffs CTA"]').click();
+    cy.get('select[name="select-tariff"]').select(newTariff.name);
+    cy.get('.cy-add-tariff').click();
     cy.get('[data-cy="add billing CTA"]').click();
     const newBilling = {
       beginDate: moment()
