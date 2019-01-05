@@ -22,7 +22,7 @@ describe('WebsiteForm API', function() {
 
   const zipToPrice = {
     annual_kwh: 1600,
-    zip: 82444,
+    zip: '82444',
     type: 'single',
   };
   it('zip to price calculation', function() {
