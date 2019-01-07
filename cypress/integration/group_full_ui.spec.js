@@ -205,6 +205,7 @@ describe('Group full UI', function() {
       cy.get('select[name="datasource"]').select('standard_profile');
       cy.get('select[name="manufacturerName"]').select('easy_meter');
       cy.get('select[name="edifactMeasurementMethod"]').select('MMR');
+      cy.get('select[name="directionNumber"]').select('ZRZ');
 
       cy.get('[data-cy="form button save"]').click();
     });
