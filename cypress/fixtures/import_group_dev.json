@@ -72,7 +72,7 @@
         "begin_date": "2000-01-01",
         "energyprice_cents_per_kwh": 28.9,
         "baseprice_cents_per_month": 300.0,
-        "number_of_contracts": 2,
+        "number_of_contracts": 1,
         "updatable": false,
         "deletable": false
       }
