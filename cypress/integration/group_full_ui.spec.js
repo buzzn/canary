@@ -341,18 +341,48 @@ describe('Group full UI', function() {
     cy.contains('.cy-name', newTariff.name).should('exist');
     cy.contains('.cy-begin-date', newTariff.beginDate).should('exist');
 
+    cy.get('[data-cy="sidebar tariffs"]').click();
+    cy.get('[data-cy="add tariff CTA"]').click();
+    const newTariff2 = {
+      name: chance.word(),
+      beginDate: moment()
+        .subtract(1, 'day')
+        .format('DD.MM.YYYY'),
+      energypriceCentsPerKwh: chance.natural(),
+      basepriceCentsPerMonth: chance.natural(),
+    };
+    cy.get('[data-cy="create tariff modal"]').within($modal => {
+      fillForm(newTariff2);
+      cy.get('button[type=submit]').click();
+    });
+    cy.contains('.cy-name', newTariff2.name).should('exist');
+    cy.contains('.cy-begin-date', newTariff2.beginDate).should('exist');
+
     cy.get('[data-cy="sidebar powertakers"]').click();
     cy.contains('.cy-number', '/1').click();
     cy.get('[data-cy="contract billings tab"]').click();
     cy.get('[data-cy="manage tariffs CTA"]').click();
     cy.get('select[name="select-tariff"]').select(newTariff.name);
     cy.get('.cy-add-tariff').click();
+    cy.contains('.cy-name', newTariff.name).should('exist');
+    cy.get('[data-cy="manage tariffs CTA"]').click();
+    cy.get('select[name="select-tariff"]').select(newTariff2.name);
+    cy.get('.cy-add-tariff').click();
+    cy.contains('.cy-name', newTariff2.name).should('exist');
+    cy.contains(
+      '.cy-last-date',
+      moment(newTariff2.beginDate, 'DD.MM.YYYY')
+        .subtract(1, 'day')
+        .format('DD.MM.YYYY'),
+    ).should('exist');
     cy.get('[data-cy="add billing CTA"]').click();
     const newBilling = {
       beginDate: moment()
-        .subtract(1, 'week')
+        .add(1, 'day')
         .format('DD.MM.YYYY'),
-      lastDate: moment().format('DD.MM.YYYY'),
+      lastDate: moment()
+        .add(4, 'days')
+        .format('DD.MM.YYYY'),
       status: 'calculated',
       invoiceNumber: chance.word(),
     };
