@@ -170,7 +170,7 @@ describe('Group full UI', function() {
       fillForm(contractChanges);
       cy.get('[data-cy="form button save"]').click();
     });
-    checkForm(contractChanges, { 'registerMeta.label': 'Consumption common' });
+    checkForm(contractChanges, { 'registerMeta.label': 'Consumption - Common' });
 
     cy.get('[data-cy="sidebar documents"]').click();
     cy.get('[data-cy="add contract CTA"]').click();
