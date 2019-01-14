@@ -269,7 +269,6 @@ describe('Group full UI', function() {
     const newReading = {
       rawValue: chance.natural({ max: 999 }),
       value: chance.natural({ max: 999 }),
-      unit: 'Wh',
       reason: 'PMR',
       readBy: 'BN',
       quality: '220',
@@ -282,7 +281,7 @@ describe('Group full UI', function() {
       cy.get('button[type=submit]').click();
     });
     cy.contains('.cy-date', newReading.date).should('exist');
-    cy.contains('.cy-reason', newReading.reason).should('exist');
+    cy.contains('.cy-reason', 'Periodic meter reading').should('exist');
 
     cy.get('[data-cy="sidebar devices"]').click();
     cy.get('[data-cy="add device CTA"]').click();
