@@ -275,6 +275,7 @@ describe('Group full UI', function() {
       source: 'MAN',
       status: 'Z83',
       date: moment().format('DD.MM.YYYY'),
+      comment: chance.sentence(),
     };
     cy.get('[data-cy="create reading modal"]').within($modal => {
       fillForm(newReading);
