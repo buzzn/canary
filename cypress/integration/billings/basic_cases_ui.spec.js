@@ -143,7 +143,10 @@ const case3 = {
       beginDate: moment()
         .subtract(1, 'month')
         .format('DD.MM.YYYY'),
-      lastDate: groupParams.tariffs.tariff2.beginDate,
+      // lastDate: groupParams.tariffs.tariff2.beginDate,
+      lastDate: moment(groupParams.tariffs.tariff2.beginDate, 'DD.MM.YYYY')
+        .subtract(1, 'day')
+        .format('DD.MM.YYYY'),
     },
     billing2: {
       beginDate: groupParams.tariffs.tariff2.beginDate,
