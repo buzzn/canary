@@ -68,8 +68,13 @@ const case1 = {
     'registerMeta.name': chance.word(),
     'registerMeta.label': 'CONSUMPTION',
   },
-  meter: {
-    productSerialnumber: chance.natural({ min: 1000, max: 9999 }),
+  meters: {
+    meter1: {
+      productSerialnumber: chance.natural({ min: 1000, max: 9999 }),
+    },
+    meter1: {
+      productSerialnumber: chance.natural({ min: 1000, max: 9999 }),
+    },
   },
   billings: {
     billing1: {
@@ -89,38 +94,7 @@ const case1 = {
   },
 };
 
-const case2 = {
-  powertaker: {
-    signingDate: moment()
-      .subtract(1, 'month')
-      .format('DD.MM.YYYY'),
-    beginDate: moment()
-      .subtract(1, 'month')
-      .format('DD.MM.YYYY'),
-    'registerMeta.name': chance.word(),
-    'registerMeta.label': 'CONSUMPTION',
-  },
-  meter: {
-    productSerialnumber: chance.natural({ min: 1000, max: 9999 }),
-  },
-  billings: {
-    billing1: {
-      beginDate: moment()
-        .subtract(1, 'month')
-        .format('DD.MM.YYYY'),
-      // lastDate: groupParams.tariffs.tariff2.beginDate,
-      lastDate: moment(groupParams.tariffs.tariff2.beginDate, 'DD.MM.YYYY')
-        .subtract(1, 'day')
-        .format('DD.MM.YYYY'),
-    },
-    billing2: {
-      beginDate: groupParams.tariffs.tariff2.beginDate,
-      lastDate: moment().format('DD.MM.YYYY'),
-    },
-  },
-};
-
-describe('Basic billing mess tests UI', function() {
+describe('Hardware billing mess tests UI', function() {
   before(function() {
     cy.login();
   });
@@ -174,7 +148,7 @@ describe('Basic billing mess tests UI', function() {
       manufacturerName: 'easy_meter',
       edifactMeasurementMethod: 'MMR',
       directionNumber: 'ZRZ',
-      ...case1.meter,
+      ...case1.meters.meter1,
     };
     cy.get('[data-cy="create meter form"]').within($form => {
       cy.get('.cy-registers-0').click();
@@ -202,15 +176,13 @@ describe('Basic billing mess tests UI', function() {
         .format('DD.MM.YYYY'),
     ).should('exist');
 
-    Object.values(case1.billings).forEach(bFields => {
-      cy.get('[data-cy="add billing CTA"]').click();
-      const newBilling = { ...bFields };
-      cy.get('[data-cy="create billing modal"]').within($modal => {
-        fillForm(newBilling);
-        cy.get('button[type=submit]').click();
-      });
-      cy.contains('.cy-begin-date', newBilling.beginDate).should('exist');
+    cy.get('[data-cy="add billing CTA"]').click();
+    const newBilling = { ...case1.billings.billing1 };
+    cy.get('[data-cy="create billing modal"]').within($modal => {
+      fillForm(newBilling);
+      cy.get('button[type=submit]').click();
     });
+    cy.contains('.cy-begin-date', newBilling.beginDate).should('exist');
     cy.contains('.cy-begin-date', case1.billings.billing1.beginDate).click();
     cy.get('.cy-item-details').should('have.length', 2);
     cy.contains('.cy-item-tariff-name', groupParams.tariffs.tariff1.name).should('exist');
@@ -230,6 +202,37 @@ describe('Basic billing mess tests UI', function() {
         .subtract(1, 'day')
         .format('DD.MM.YYYY'),
     ).should('exist');
+
+    cy.get('[data-cy="sidebar system"]').click();
+    cy.get('[data-cy="add malo CTA"]').click();
+    const newMeter2 = {
+      type: 'real',
+      datasource: 'standard_profile',
+      manufacturerName: 'easy_meter',
+      edifactMeasurementMethod: 'MMR',
+      directionNumber: 'ZRZ',
+      ...case1.meters.meter2,
+    };
+    cy.get('[data-cy="create meter form"]').within($form => {
+      cy.get('.cy-registers-0').click();
+      cy.get('.cy-registers-0').within($dropdown => {
+        cy.contains('.cy__option', newPowertaker['registerMeta.name']).click();
+      });
+      fillForm(newMeter);
+      cy.get('[data-cy="form button save"]').click();
+    });
+    cy.contains('.cy-meter-serial', newMeter.productSerialnumber).should('exist');
+
+    cy.get('[data-cy="sidebar powertakers"]').click();
+    cy.contains('.cy-number', '/1').click();
+    cy.get('[data-cy="contract billings tab"]').click();
+    cy.get('[data-cy="add billing CTA"]').click();
+    const newBilling2 = { ...case1.billings.billing2 };
+    cy.get('[data-cy="create billing modal"]').within($modal => {
+      fillForm(newBilling2);
+      cy.get('button[type=submit]').click();
+    });
+    cy.contains('.cy-begin-date', newBilling2.beginDate).should('exist');
     // billing 2
     cy.contains('.cy-begin-date', case1.billings.billing2.beginDate).click();
     cy.get('.cy-item-details').should('have.length', 2);
@@ -246,103 +249,6 @@ describe('Basic billing mess tests UI', function() {
     cy.contains(
       '.cy-item-last-date',
       moment(case1.billings.billing1.beginDate, 'DD.MM.YYYY')
-        .subtract(1, 'day')
-        .format('DD.MM.YYYY'),
-    ).should('exist');
-  });
-
-  it('Case2', function() {
-    cy.get('[data-cy="sidebar powertakers"]').click();
-    cy.contains('.cy-number', '/2').should('not.to.exist');
-    cy.get('[data-cy="add powertaker CTA"]').click();
-    const newPowertaker = {
-      'customer.prefix': 'M',
-      'customer.title': 'Dr.',
-      'customer.firstName': chance.first(),
-      'customer.lastName': chance.last(),
-      'customer.address.street': chance.street(),
-      'customer.address.city': chance.city(),
-      'customer.address.zip': chance.zip(),
-      'customer.email': chance.email(),
-      ...case2.powertaker,
-    };
-    cy.get('[data-cy="create powertaker form"]').within($form => {
-      cy.get('[data-cy="powertaker radio person"]').click();
-      fillForm(newPowertaker);
-      cy.get('[data-cy="form button save"]').click();
-    });
-    cy.contains(
-      '.cy-powertaker',
-      `${newPowertaker['customer.lastName']} ${newPowertaker['customer.firstName']}`,
-    ).should('exist');
-    cy.contains('.cy-malo', newPowertaker['registerMeta.name']).should('exist');
-    cy.contains('.cy-number', '/2').should('exist');
-
-    cy.get('[data-cy="sidebar system"]').click();
-    cy.contains('.cy-malo-name', newPowertaker['registerMeta.name']).should('exist');
-    cy.get('[data-cy="add malo CTA"]').click();
-    const newMeter = {
-      type: 'real',
-      datasource: 'standard_profile',
-      manufacturerName: 'easy_meter',
-      edifactMeasurementMethod: 'MMR',
-      directionNumber: 'ZRZ',
-      ...case2.meter,
-    };
-    cy.get('[data-cy="create meter form"]').within($form => {
-      cy.get('.cy-registers-0').click();
-      cy.get('.cy-registers-0').within($dropdown => {
-        cy.contains('.cy__option', newPowertaker['registerMeta.name']).click();
-      });
-      fillForm(newMeter);
-      cy.get('[data-cy="form button save"]').click();
-    });
-    cy.contains('.cy-meter-serial', newMeter.productSerialnumber).should('exist');
-
-    cy.get('[data-cy="sidebar powertakers"]').click();
-    cy.contains('.cy-number', '/2').click();
-    cy.get('[data-cy="contract billings tab"]').click();
-    Object.values(groupParams.tariffs).forEach(tFields => {
-      cy.get('[data-cy="manage tariffs CTA"]').click();
-      cy.get('select[name="select-tariff"]').select(tFields.name);
-      cy.get('.cy-add-tariff').click();
-      cy.contains('.cy-name', tFields.name).should('exist');
-    });
-    cy.contains(
-      '.cy-last-date',
-      moment(groupParams.tariffs.tariff2.beginDate, 'DD.MM.YYYY')
-        .subtract(1, 'day')
-        .format('DD.MM.YYYY'),
-    ).should('exist');
-
-    Object.values(case2.billings).forEach(bFields => {
-      cy.get('[data-cy="add billing CTA"]').click();
-      const newBilling = { ...bFields };
-      cy.get('[data-cy="create billing modal"]').within($modal => {
-        fillForm(newBilling);
-        cy.get('button[type=submit]').click();
-      });
-      cy.contains('.cy-begin-date', newBilling.beginDate).should('exist');
-    });
-    cy.contains('.cy-begin-date', case2.billings.billing1.beginDate).click();
-    cy.get('.cy-item-details').should('have.length', 1);
-    cy.contains('.cy-item-tariff-name', groupParams.tariffs.tariff1.name).should('exist');
-    // billing 1
-    cy.contains('.cy-item-begin-date', case2.billings.billing1.beginDate).should('exist');
-    cy.contains(
-      '.cy-item-last-date',
-      moment(case2.billings.billing1.lastDate, 'DD.MM.YYYY')
-        .subtract(1, 'day')
-        .format('DD.MM.YYYY'),
-    ).should('exist');
-    // billing 2
-    cy.contains('.cy-begin-date', case2.billings.billing2.beginDate).click();
-    cy.get('.cy-item-details').should('have.length', 1);
-    cy.contains('.cy-item-tariff-name', groupParams.tariffs.tariff2.name).should('exist');
-    cy.contains('.cy-item-begin-date', case2.billings.billing2.beginDate).should('exist');
-    cy.contains(
-      '.cy-item-last-date',
-      moment(case2.billings.billing2.lastDate, 'DD.MM.YYYY')
         .subtract(1, 'day')
         .format('DD.MM.YYYY'),
     ).should('exist');
