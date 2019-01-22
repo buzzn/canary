@@ -262,7 +262,7 @@ describe('Group full UI', function() {
     checkForm(maloChanges, {});
 
     cy.get('[data-cy="malo registers tab"]').click();
-    //FIXME: get obit from obj
+    //FIXME: get obis from obj
     cy.contains('.cy-obis', '1-1:1.8.0').click();
     cy.get('[data-cy="register readings tab"]').click();
     cy.get('[data-cy="add reading CTA"]').click();
@@ -375,6 +375,30 @@ describe('Group full UI', function() {
         .subtract(1, 'day')
         .format('DD.MM.YYYY'),
     ).should('exist');
+    cy.contains('.cy-obis', '1-1:1.8.0').click();
+    cy.get('[data-cy="register readings tab"]').click();
+    cy.get('[data-cy="add reading CTA"]').click();
+    const newReading2 = {
+      rawValue: chance.natural({ max: 999 }),
+      value: chance.natural({ max: 999 }),
+      reason: 'IOM',
+      readBy: 'BN',
+      quality: '220',
+      source: 'MAN',
+      status: 'Z83',
+      date: moment().format('DD.MM.YYYY'),
+      comment: chance.sentence(),
+    };
+    cy.get('[data-cy="create reading modal"]').within($modal => {
+      fillForm(newReading2);
+      cy.get('button[type=submit]').click();
+    });
+    cy.contains('.cy-date', newReading.date).should('exist');
+    cy.contains('.cy-reason', 'Installation of meter').should('exist');
+
+    cy.get('[data-cy="sidebar powertakers"]').click();
+    cy.contains('.cy-number', '/1').click();
+    cy.get('[data-cy="contract billings tab"]').click();
     cy.get('[data-cy="add billing CTA"]').click();
     const newBilling = {
       beginDate: moment()

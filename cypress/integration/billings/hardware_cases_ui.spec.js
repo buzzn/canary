@@ -176,6 +176,30 @@ describe('Hardware billing mess tests UI', function() {
         .format('DD.MM.YYYY'),
     ).should('exist');
 
+    cy.contains('.cy-obis', '1-1:1.8.0').click();
+    cy.get('[data-cy="register readings tab"]').click();
+    cy.get('[data-cy="add reading CTA"]').click();
+    const newReading = {
+      rawValue: chance.natural({ max: 999 }),
+      value: chance.natural({ max: 999 }),
+      reason: 'IOM',
+      readBy: 'BN',
+      quality: '220',
+      source: 'MAN',
+      status: 'Z83',
+      date: moment().format('DD.MM.YYYY'),
+      comment: chance.sentence(),
+    };
+    cy.get('[data-cy="create reading modal"]').within($modal => {
+      fillForm(newReading);
+      cy.get('button[type=submit]').click();
+    });
+    cy.contains('.cy-date', newReading.date).should('exist');
+    cy.contains('.cy-reason', 'Installation of meter').should('exist');
+
+    cy.get('[data-cy="sidebar powertakers"]').click();
+    cy.contains('.cy-number', '/1').click();
+    cy.get('[data-cy="contract billings tab"]').click();
     cy.get('[data-cy="add billing CTA"]').click();
     const newBilling = { ...case1.billings.billing1 };
     cy.get('[data-cy="create billing modal"]').within($modal => {
@@ -226,6 +250,29 @@ describe('Hardware billing mess tests UI', function() {
     cy.get('[data-cy="sidebar powertakers"]').click();
     cy.contains('.cy-number', '/1').click();
     cy.get('[data-cy="contract billings tab"]').click();
+    cy.get('.cy-obis:contains(1-1:1.8.0):last').click();
+    cy.get('[data-cy="register readings tab"]').click();
+    cy.get('[data-cy="add reading CTA"]').click();
+    const newReading2 = {
+      rawValue: chance.natural({ max: 999 }),
+      value: chance.natural({ max: 999 }),
+      reason: 'IOM',
+      readBy: 'BN',
+      quality: '220',
+      source: 'MAN',
+      status: 'Z83',
+      date: moment().format('DD.MM.YYYY'),
+      comment: chance.sentence(),
+    };
+    cy.get('[data-cy="create reading modal"]').within($modal => {
+      fillForm(newReading2);
+      cy.get('button[type=submit]').click();
+    });
+    cy.contains('.cy-date', newReading.date).should('exist');
+    cy.contains('.cy-reason', 'Installation of meter').should('exist');
+    cy.get('[data-cy="sidebar powertakers"]').click();
+    cy.contains('.cy-number', '/1').click();
+    cy.get('[data-cy="contract billings tab"]').click();
     cy.get('[data-cy="add billing CTA"]').click();
     const newBilling2 = { ...case1.billings.billing2 };
     cy.get('[data-cy="create billing modal"]').within($modal => {
@@ -235,20 +282,26 @@ describe('Hardware billing mess tests UI', function() {
     cy.contains('.cy-begin-date', newBilling2.beginDate).should('exist');
     // billing 2
     cy.contains('.cy-begin-date', case1.billings.billing2.beginDate).click();
-    cy.get('.cy-item-details').should('have.length', 2);
-    cy.contains('.cy-item-tariff-name', groupParams.tariffs.tariff1.name).should('exist');
-    cy.contains('.cy-item-tariff-name', groupParams.tariffs.tariff2.name).should('exist');
-    cy.contains('.cy-item-begin-date', case1.billings.billing2.beginDate).should('exist');
-    cy.contains(
-      '.cy-item-last-date',
-      moment(case1.billings.billing2.lastDate, 'DD.MM.YYYY')
+    cy.get('.cy-item-details').should('have.length', 4);
+    cy.get(`.cy-item-tariff-name:contains(${groupParams.tariffs.tariff1.name})`).should('have.length', 2);
+    cy.get(`.cy-item-tariff-name:contains(${groupParams.tariffs.tariff2.name})`).should('have.length', 2);
+    cy.get(`.cy-item-begin-date:contains(${case1.billings.billing2.beginDate})`).should('have.length', 2);
+    cy.get(
+      `.cy-item-last-date:contains(${moment(case1.billings.billing2.lastDate, 'DD.MM.YYYY')
         .subtract(1, 'day')
-        .format('DD.MM.YYYY'),
-    ).should('exist');
+        .format('DD.MM.YYYY')})`,
+    ).should('have.length', 2);
     cy.contains('.cy-item-begin-date', case1.billings.billing1.lastDate).should('exist');
+    cy.contains('.cy-item-begin-date', groupParams.tariffs.tariff2.beginDate).should('exist');
     cy.contains(
       '.cy-item-last-date',
       moment(case1.billings.billing1.beginDate, 'DD.MM.YYYY')
+        .subtract(1, 'day')
+        .format('DD.MM.YYYY'),
+    ).should('exist');
+    cy.contains(
+      '.cy-item-last-date',
+      moment(groupParams.tariffs.tariff2.beginDate, 'DD.MM.YYYY')
         .subtract(1, 'day')
         .format('DD.MM.YYYY'),
     ).should('exist');
