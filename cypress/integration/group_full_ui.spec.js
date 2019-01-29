@@ -407,7 +407,6 @@ describe('Group full UI', function() {
       lastDate: moment()
         .add(4, 'days')
         .format('DD.MM.YYYY'),
-      status: 'calculated',
       invoiceNumber: chance.word(),
     };
     cy.get('[data-cy="create billing modal"]').within($modal => {

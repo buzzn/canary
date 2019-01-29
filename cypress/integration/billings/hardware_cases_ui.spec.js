@@ -57,6 +57,8 @@ const groupParams = {
   },
 };
 
+const case1meterSerialInit = chance.natural({ min: 1000, max: 9999 });
+
 const case1 = {
   powertaker: {
     signingDate: moment()
@@ -70,10 +72,10 @@ const case1 = {
   },
   meters: {
     meter1: {
-      productSerialnumber: chance.natural({ min: 1000, max: 9999 }),
+      productSerialnumber: case1meterSerialInit,
     },
-    meter1: {
-      productSerialnumber: chance.natural({ min: 1000, max: 9999 }),
+    meter2: {
+      productSerialnumber: case1meterSerialInit + 1,
     },
   },
   billings: {
@@ -187,7 +189,7 @@ describe('Hardware billing mess tests UI', function() {
       quality: '220',
       source: 'MAN',
       status: 'Z83',
-      date: moment().format('DD.MM.YYYY'),
+      date: case1.powertaker.beginDate,
       comment: chance.sentence(),
     };
     cy.get('[data-cy="create reading modal"]').within($modal => {
@@ -208,23 +210,21 @@ describe('Hardware billing mess tests UI', function() {
     });
     cy.contains('.cy-begin-date', newBilling.beginDate).should('exist');
     cy.contains('.cy-begin-date', case1.billings.billing1.beginDate).click();
-    cy.get('.cy-item-details').should('have.length', 2);
-    cy.contains('.cy-item-tariff-name', groupParams.tariffs.tariff1.name).should('exist');
-    cy.contains('.cy-item-tariff-name', groupParams.tariffs.tariff2.name).should('exist');
+    cy.get('.cy-hw-meter-serial').should('have.length', 2);
+    cy.contains('.cy-hw-meter-serial', case1.meters.meter1.productSerialnumber).should('exist');
+    cy.contains('.cy-hw-meter-serial', case1.meters.meter2.productSerialnumber).should('not.exist');
+    cy.contains('.cy-item-tariff', groupParams.tariffs.tariff1.name).should('exist');
+    cy.contains('.cy-item-tariff', groupParams.tariffs.tariff2.name).should('exist');
     // billing 1
-    cy.contains('.cy-item-begin-date', case1.billings.billing1.beginDate).should('exist');
+    cy.get('.cy-hw-begin-reading:contains(Add reading)').should('have.length', 2);
+    cy.get('.cy-hw-end-reading:contains(Add reading)').should('have.length', 2);
     cy.contains(
-      '.cy-item-last-date',
-      moment(case1.billings.billing1.lastDate, 'DD.MM.YYYY')
-        .subtract(1, 'day')
-        .format('DD.MM.YYYY'),
+      '.cy-hw-dates',
+      `${case1.billings.billing1.beginDate} - ${groupParams.tariffs.tariff2.beginDate}`,
     ).should('exist');
-    cy.contains('.cy-item-begin-date', groupParams.tariffs.tariff2.beginDate).should('exist');
     cy.contains(
-      '.cy-item-last-date',
-      moment(groupParams.tariffs.tariff2.beginDate, 'DD.MM.YYYY')
-        .subtract(1, 'day')
-        .format('DD.MM.YYYY'),
+      '.cy-hw-dates',
+      `${groupParams.tariffs.tariff2.beginDate} - ${case1.billings.billing1.lastDate}`,
     ).should('exist');
 
     cy.get('[data-cy="sidebar system"]').click();
@@ -242,7 +242,7 @@ describe('Hardware billing mess tests UI', function() {
       cy.get('.cy-registers-0').within($dropdown => {
         cy.contains('.cy__option', newPowertaker['registerMeta.name']).click();
       });
-      fillForm(newMeter);
+      fillForm(newMeter2);
       cy.get('[data-cy="form button save"]').click();
     });
     cy.contains('.cy-meter-serial', newMeter.productSerialnumber).should('exist');
@@ -261,7 +261,7 @@ describe('Hardware billing mess tests UI', function() {
       quality: '220',
       source: 'MAN',
       status: 'Z83',
-      date: moment().format('DD.MM.YYYY'),
+      date: case1.powertaker.beginDate,
       comment: chance.sentence(),
     };
     cy.get('[data-cy="create reading modal"]').within($modal => {
@@ -282,28 +282,26 @@ describe('Hardware billing mess tests UI', function() {
     cy.contains('.cy-begin-date', newBilling2.beginDate).should('exist');
     // billing 2
     cy.contains('.cy-begin-date', case1.billings.billing2.beginDate).click();
-    cy.get('.cy-item-details').should('have.length', 4);
-    cy.get(`.cy-item-tariff-name:contains(${groupParams.tariffs.tariff1.name})`).should('have.length', 2);
-    cy.get(`.cy-item-tariff-name:contains(${groupParams.tariffs.tariff2.name})`).should('have.length', 2);
-    cy.get(`.cy-item-begin-date:contains(${case1.billings.billing2.beginDate})`).should('have.length', 2);
-    cy.get(
-      `.cy-item-last-date:contains(${moment(case1.billings.billing2.lastDate, 'DD.MM.YYYY')
-        .subtract(1, 'day')
-        .format('DD.MM.YYYY')})`,
-    ).should('have.length', 2);
-    cy.contains('.cy-item-begin-date', case1.billings.billing1.lastDate).should('exist');
-    cy.contains('.cy-item-begin-date', groupParams.tariffs.tariff2.beginDate).should('exist');
+    cy.get('.cy-hw-meter-serial').should('have.length', 4);
+    cy.contains('.cy-hw-meter-serial', case1.meters.meter1.productSerialnumber).should('exist');
+    cy.contains('.cy-hw-meter-serial', case1.meters.meter2.productSerialnumber).should('exist');
+    cy.contains('.cy-item-tariff', groupParams.tariffs.tariff1.name).should('exist');
+    cy.contains('.cy-item-tariff', groupParams.tariffs.tariff2.name).should('exist');
+    cy.get('.cy-hw-begin-reading:contains(Add reading)').should('have.length', 2);
+    cy.get('.cy-hw-end-reading:contains(Add reading)').should('have.length', 4);
+    cy.contains('.cy-hw-dates', `${case1.billings.billing2.beginDate} - ${case1.billings.billing1.beginDate}`).should(
+      'exist',
+    );
     cy.contains(
-      '.cy-item-last-date',
-      moment(case1.billings.billing1.beginDate, 'DD.MM.YYYY')
-        .subtract(1, 'day')
-        .format('DD.MM.YYYY'),
+      '.cy-hw-dates',
+      `${case1.billings.billing2.beginDate} - ${groupParams.tariffs.tariff2.beginDate}`,
     ).should('exist');
+    cy.contains('.cy-hw-dates', `${case1.billings.billing1.lastDate} - ${case1.billings.billing2.lastDate}`).should(
+      'exist',
+    );
     cy.contains(
-      '.cy-item-last-date',
-      moment(groupParams.tariffs.tariff2.beginDate, 'DD.MM.YYYY')
-        .subtract(1, 'day')
-        .format('DD.MM.YYYY'),
+      '.cy-hw-dates',
+      `${groupParams.tariffs.tariff2.beginDate} - ${case1.billings.billing2.lastDate}`,
     ).should('exist');
   });
 });
