@@ -77,7 +77,12 @@ export default function addGroup(groupParams) {
   cy.get('[data-cy="group settings tab"]').click();
   cy.get('[data-cy="group edit switch"]').click();
   cy.get('[data-cy="group delete button"]').should('not.to.exist');
-  cy.get('[data-cy="form button cancel"]').click();
+  cy.get('input[name="startDate"]').type(
+    moment()
+      .subtract(1, 'year')
+      .format('DD.MM.YYYY'),
+  );
+  cy.get('[data-cy="form button save"]').click({ force: true });
 
   cy.get('[data-cy="sidebar documents"]').click();
   cy.contains('.cy-number', '/0').should('not.to.exist');
@@ -85,7 +90,12 @@ export default function addGroup(groupParams) {
   cy.get('[data-cy="create contract modal"]').within($modal => {
     cy.get('select[name="type"]').select('contract_localpool_processing');
     cy.get('input[name="taxNumber"]').type(chance.integer({ min: 10000, max: 99999 }));
-    cy.get('input[name="beginDate"]').type(moment().format('DD.MM.YYYY'));
+    cy.get('input[name="beginDate"]').type(
+      moment()
+        .subtract(1, 'year')
+        .add(1, 'day')
+        .format('DD.MM.YYYY'),
+    );
     cy.get('button[type=submit]').click();
   });
   cy.contains('.cy-type-intl', 'Local Pool Processing').should('exist');
@@ -95,8 +105,8 @@ export default function addGroup(groupParams) {
   Object.values(groupParams.tariffs).forEach(tFields => {
     cy.get('[data-cy="add tariff CTA"]').click();
     const newTariff = {
-      energypriceCentsPerKwh: chance.natural({ max: 500 }),
-      basepriceCentsPerMonth: chance.natural({ max: 500 }),
+      energypriceCentsPerKwh: chance.natural({ min: 1, max: 500 }),
+      basepriceCentsPerMonth: chance.natural({ min: 1, max: 500 }),
       ...tFields,
     };
     cy.get('[data-cy="create tariff modal"]').within($modal => {
