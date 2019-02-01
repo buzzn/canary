@@ -192,7 +192,7 @@ describe('Calculated billing tests UI', function() {
     });
     cy.contains('.cy-begin-date', case1.billing.beginDate).should('exist');
 
-    cy.get('[data-cy="contract data tab"]').click();
+    cy.get('[data-cy="contract payments tab"]').click();
     cy.contains('[data-cy="total balance"]', 'Total balance: 0.00 €').should('exist');
     const addSum = 500;
     cy.get('[data-cy="account amount"]').type(addSum);
@@ -232,9 +232,9 @@ describe('Calculated billing tests UI', function() {
     cy.get('select[name="status"]').select('calculated');
     cy.get('button[type=submit]').click();
 
-    cy.get('[data-cy="contract data tab"]').click();
+    cy.get('[data-cy="contract payments tab"]').click();
     // HACK: replace with real calculations
-    cy.contains('[data-cy="total balance"]', 'Total balance: 299.93 €').should('exist');
-    cy.contains('.cy-account-amount', '-200.07 €').should('exist');
+    cy.contains('[data-cy="total balance"]', 'Total balance: 261.92 €').should('exist');
+    cy.contains('.cy-account-amount', '-238.08 €').should('exist');
   });
 });
