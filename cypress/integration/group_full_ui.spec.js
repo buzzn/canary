@@ -157,6 +157,7 @@ describe('Group full UI', function() {
       oldSupplierName: chance.word(),
       oldCustomerNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
       oldAccountNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
+      energyConsumptionBeforeKwhPa: chance.natural({ max: 200000 }),
       thirdPartyBillingNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
       thirdPartyRenterNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
       shareRegisterWithGroup: true,
@@ -276,9 +277,9 @@ describe('Group full UI', function() {
     cy.contains('.cy-obis', '1-1:1.8.0').click();
     cy.get('[data-cy="register readings tab"]').click();
     cy.get('[data-cy="add reading CTA"]').click();
+    const reading1Val = chance.natural({ max: 999 });
     const newReading = {
-      rawValue: chance.natural({ max: 999 }),
-      value: chance.natural({ max: 999 }),
+      value: reading1Val,
       reason: 'PMR',
       readBy: 'BN',
       quality: '220',
@@ -388,9 +389,9 @@ describe('Group full UI', function() {
     cy.contains('.cy-obis', '1-1:1.8.0').click();
     cy.get('[data-cy="register readings tab"]').click();
     cy.get('[data-cy="add reading CTA"]').click();
+    const reading2Val = chance.natural({ max: 999 });
     const newReading2 = {
-      rawValue: chance.natural({ max: 999 }),
-      value: chance.natural({ max: 999 }),
+      value: reading2Val,
       reason: 'IOM',
       readBy: 'BN',
       quality: '220',

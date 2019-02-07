@@ -77,11 +77,9 @@ const case1 = {
   },
   readings: {
     beginReading: {
-      rawValue: 1000,
       value: 1000,
     },
     endReading: {
-      rawValue: 2000,
       value: 2000,
     },
   },
@@ -164,9 +162,9 @@ describe('Calculated billing tests UI', function() {
     cy.contains('.cy-obis', '1-1:1.8.0').click();
     cy.get('[data-cy="register readings tab"]').click();
     cy.get('[data-cy="add reading CTA"]').click();
+    const reading1Val = chance.natural({ max: 999 });
     const newReading = {
-      rawValue: chance.natural({ max: 999 }),
-      value: chance.natural({ max: 999 }),
+      value: reading1Val,
       reason: 'IOM',
       readBy: 'BN',
       quality: '220',
@@ -192,7 +190,7 @@ describe('Calculated billing tests UI', function() {
     });
     cy.contains('.cy-begin-date', case1.billing.beginDate).should('exist');
 
-    cy.get('[data-cy="contract payments tab"]').click();
+    cy.get('[data-cy="contract payments tab"]').click({ force: true });
     cy.contains('[data-cy="total balance"]', 'Total balance: 0.00 €').should('exist');
     const addSum = 500;
     cy.get('[data-cy="account amount"]').type(addSum);
@@ -201,10 +199,9 @@ describe('Calculated billing tests UI', function() {
     cy.contains('[data-cy="total balance"]', `Total balance: ${addSum}.00 €`).should('exist');
 
     cy.get('[data-cy="contract billings tab"]').click();
-    cy.contains('.cy-begin-date', case1.billing.beginDate).click();
+    cy.contains('.cy-begin-date', case1.billing.beginDate).click({ force: true });
     cy.get('.cy-hw-begin-reading:contains(Add reading)').click();
     const beginReading = {
-      rawValue: case1.readings.beginReading.rawValue,
       value: case1.readings.beginReading.value,
       source: 'MAN',
       comment: chance.sentence(),
@@ -217,7 +214,6 @@ describe('Calculated billing tests UI', function() {
     cy.contains('.cy-begin-date', case1.billing.beginDate).click();
     cy.get('.cy-hw-end-reading:contains(Add reading)').click();
     const endReading = {
-      rawValue: case1.readings.endReading.rawValue,
       value: case1.readings.endReading.value,
       source: 'MAN',
       comment: chance.sentence(),
@@ -227,12 +223,12 @@ describe('Calculated billing tests UI', function() {
       cy.get('button[type=submit]').click();
     });
     cy.wait(1000);
-    cy.contains('.cy-begin-date', case1.billing.beginDate).click();
+    cy.contains('.cy-begin-date', case1.billing.beginDate).click({ force: true });
     cy.get('[data-cy="billing edit switch"]').click();
     cy.get('select[name="status"]').select('calculated');
     cy.get('button[type=submit]').click();
 
-    cy.get('[data-cy="contract payments tab"]').click();
+    cy.get('[data-cy="contract payments tab"]').click({ force: true });
     // HACK: replace with real calculations
     cy.contains('[data-cy="total balance"]', 'Total balance: 261.92 €').should('exist');
     cy.contains('.cy-account-amount', '-238.08 €').should('exist');

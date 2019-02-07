@@ -205,9 +205,9 @@ describe('Basic billing mess tests UI', function() {
     cy.contains('.cy-obis', '1-1:1.8.0').click();
     cy.get('[data-cy="register readings tab"]').click();
     cy.get('[data-cy="add reading CTA"]').click();
+    const reading1Val = chance.natural({ max: 999 });
     const newReading = {
-      rawValue: chance.natural({ max: 999 }),
-      value: chance.natural({ max: 999 }),
+      value: reading1Val,
       reason: 'IOM',
       readBy: 'BN',
       quality: '220',
@@ -333,9 +333,9 @@ describe('Basic billing mess tests UI', function() {
     cy.contains('.cy-obis', '1-1:1.8.0').click();
     cy.get('[data-cy="register readings tab"]').click();
     cy.get('[data-cy="add reading CTA"]').click();
+    const reading1Val = chance.natural({ max: 999 });
     const newReading = {
-      rawValue: chance.natural({ max: 999 }),
-      value: chance.natural({ max: 999 }),
+      value: reading1Val,
       reason: 'IOM',
       readBy: 'BN',
       quality: '220',
