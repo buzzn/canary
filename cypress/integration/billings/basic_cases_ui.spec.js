@@ -174,6 +174,7 @@ describe('Basic billing mess tests UI', function() {
       manufacturerName: 'easy_meter',
       edifactMeasurementMethod: 'MMR',
       directionNumber: 'ZRZ',
+      converterConstant: 1,
       ...case1.meter,
     };
     cy.get('[data-cy="create meter form"]').within($form => {
@@ -207,7 +208,7 @@ describe('Basic billing mess tests UI', function() {
     cy.get('[data-cy="add reading CTA"]').click();
     const reading1Val = chance.natural({ max: 999 });
     const newReading = {
-      value: reading1Val,
+      rawValue: reading1Val,
       reason: 'IOM',
       readBy: 'BN',
       quality: '220',
@@ -302,6 +303,7 @@ describe('Basic billing mess tests UI', function() {
       manufacturerName: 'easy_meter',
       edifactMeasurementMethod: 'MMR',
       directionNumber: 'ZRZ',
+      converterConstant: 1,
       ...case2.meter,
     };
     cy.get('[data-cy="create meter form"]').within($form => {
@@ -335,7 +337,7 @@ describe('Basic billing mess tests UI', function() {
     cy.get('[data-cy="add reading CTA"]').click();
     const reading1Val = chance.natural({ max: 999 });
     const newReading = {
-      value: reading1Val,
+      rawValue: reading1Val,
       reason: 'IOM',
       readBy: 'BN',
       quality: '220',

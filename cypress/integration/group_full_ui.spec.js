@@ -214,6 +214,7 @@ describe('Group full UI', function() {
       cy.get('select[name="type"]').select('real');
       cy.get('input[name="productSerialnumber"]').type(meterSerial);
       cy.get('select[name="datasource"]').select('standard_profile');
+      cy.get('select[name="converterConstant"]').type('1');
       cy.get('select[name="manufacturerName"]').select('easy_meter');
       cy.get('select[name="edifactMeasurementMethod"]').select('MMR');
       cy.get('select[name="directionNumber"]').select('ZRZ');
@@ -279,7 +280,7 @@ describe('Group full UI', function() {
     cy.get('[data-cy="add reading CTA"]').click();
     const reading1Val = chance.natural({ max: 999 });
     const newReading = {
-      value: reading1Val,
+      rawValue: reading1Val,
       reason: 'PMR',
       readBy: 'BN',
       quality: '220',
@@ -391,7 +392,7 @@ describe('Group full UI', function() {
     cy.get('[data-cy="add reading CTA"]').click();
     const reading2Val = chance.natural({ max: 999 });
     const newReading2 = {
-      value: reading2Val,
+      rawValue: reading2Val,
       reason: 'IOM',
       readBy: 'BN',
       quality: '220',

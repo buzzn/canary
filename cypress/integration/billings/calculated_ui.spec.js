@@ -139,6 +139,7 @@ describe('Calculated billing tests UI', function() {
       manufacturerName: 'easy_meter',
       edifactMeasurementMethod: 'MMR',
       directionNumber: 'ZRZ',
+      converterConstant: 1,
       ...case1.meter,
     };
     cy.get('[data-cy="create meter form"]').within($form => {
@@ -164,7 +165,7 @@ describe('Calculated billing tests UI', function() {
     cy.get('[data-cy="add reading CTA"]').click();
     const reading1Val = chance.natural({ max: 999 });
     const newReading = {
-      value: reading1Val,
+      rawValue: reading1Val,
       reason: 'IOM',
       readBy: 'BN',
       quality: '220',
@@ -202,7 +203,7 @@ describe('Calculated billing tests UI', function() {
     cy.contains('.cy-begin-date', case1.billing.beginDate).click({ force: true });
     cy.get('.cy-hw-begin-reading:contains(Add reading)').click();
     const beginReading = {
-      value: case1.readings.beginReading.value,
+      rawValue: case1.readings.beginReading.value,
       source: 'MAN',
       comment: chance.sentence(),
     };
@@ -214,7 +215,7 @@ describe('Calculated billing tests UI', function() {
     cy.contains('.cy-begin-date', case1.billing.beginDate).click();
     cy.get('.cy-hw-end-reading:contains(Add reading)').click();
     const endReading = {
-      value: case1.readings.endReading.value,
+      rawValue: case1.readings.endReading.value,
       source: 'MAN',
       comment: chance.sentence(),
     };
