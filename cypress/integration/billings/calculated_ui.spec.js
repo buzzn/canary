@@ -47,8 +47,8 @@ const groupParams = {
       beginDate: moment()
         .subtract(2, 'month')
         .format('DD.MM.YYYY'),
-      energypriceCentsPerKwh: 20,
-      basepriceCentsPerMonth: 26,
+      energypriceCentsPerKwh: 0.2,
+      basepriceCentsPerMonth: 0.26,
     },
   },
 };
@@ -192,12 +192,12 @@ describe('Calculated billing tests UI', function() {
     cy.contains('.cy-begin-date', case1.billing.beginDate).should('exist');
 
     cy.get('[data-cy="contract payments tab"]').click({ force: true });
-    cy.contains('[data-cy="total balance"]', 'Total balance: 0.00 €').should('exist');
+    cy.contains('[data-cy="total balance"]', 'Total balance: 0.0000 €').should('exist');
     const addSum = 500;
     cy.get('[data-cy="account amount"]').type(addSum);
     cy.get('[data-cy="button add"]').click();
-    cy.contains('.cy-account-amount', `${addSum}.00 €`).should('exist');
-    cy.contains('[data-cy="total balance"]', `Total balance: ${addSum}.00 €`).should('exist');
+    cy.contains('.cy-account-amount', `${addSum}.0000 €`).should('exist');
+    cy.contains('[data-cy="total balance"]', `Total balance: ${addSum}.0000 €`).should('exist');
 
     cy.get('[data-cy="contract billings tab"]').click();
     cy.contains('.cy-begin-date', case1.billing.beginDate).click({ force: true });
@@ -211,8 +211,15 @@ describe('Calculated billing tests UI', function() {
       fillForm(beginReading);
       cy.get('button[type=submit]').click();
     });
-    cy.wait(1000);
-    cy.contains('.cy-begin-date', case1.billing.beginDate).click();
+    // HACK
+    cy.wait(3000);
+    cy.reload();
+    cy.contains('.cy-begin-date', case1.billing.beginDate)
+      .parent('.rt-tr')
+      .get('.rt-expandable')
+      .first()
+      .click();
+    // HACK_END
     cy.get('.cy-hw-end-reading:contains(Add reading)').click();
     const endReading = {
       rawValue: case1.readings.endReading.value,
@@ -223,15 +230,22 @@ describe('Calculated billing tests UI', function() {
       fillForm(endReading);
       cy.get('button[type=submit]').click();
     });
-    cy.wait(1000);
-    cy.contains('.cy-begin-date', case1.billing.beginDate).click({ force: true });
+    // HACK
+    cy.wait(3000);
+    cy.reload();
+    cy.contains('.cy-begin-date', case1.billing.beginDate)
+      .parent('.rt-tr')
+      .get('.rt-expandable')
+      .first()
+      .click();
+    // HACK_END
     cy.get('[data-cy="billing edit switch"]').click();
     cy.get('select[name="status"]').select('calculated');
     cy.get('button[type=submit]').click();
 
     cy.get('[data-cy="contract payments tab"]').click({ force: true });
     // HACK: replace with real calculations
-    cy.contains('[data-cy="total balance"]', 'Total balance: 261.92 €').should('exist');
-    cy.contains('.cy-account-amount', '-238.08 €').should('exist');
+    cy.contains('[data-cy="total balance"]', 'Total balance: 261.9170 €').should('exist');
+    cy.contains('.cy-account-amount', '-238.0830 €').should('exist');
   });
 });

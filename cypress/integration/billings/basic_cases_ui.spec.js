@@ -367,9 +367,6 @@ describe('Basic billing mess tests UI', function() {
     });
     // HACK
     cy.wait(1000);
-    // cy.get('[data-cy="sidebar powertakers"]').click();
-    // cy.contains('.cy-number', '/2').click();
-    // cy.get('[data-cy="contract billings tab"]').click();
     // HACK_END
     cy.contains('.cy-begin-date', case2.billings.billing1.beginDate).click();
     cy.get('.cy-hw-meter-serial').should('have.length', 1);
@@ -383,14 +380,12 @@ describe('Basic billing mess tests UI', function() {
     ).should('exist');
     // billing 2
     // HACK
-    cy.wait(1000);
-    cy.contains('.cy-begin-date', case2.billings.billing1.beginDate).click();
-    cy.wait(1000);
-    cy.get('[data-cy="sidebar powertakers"]').click();
-    cy.contains('.cy-number', '/2').click();
-    cy.get('[data-cy="contract billings tab"]').click();
+    cy.contains('.cy-begin-date', case2.billings.billing2.beginDate)
+      .parent('.rt-tr')
+      .get('.rt-expandable')
+      .first()
+      .click({ force: true });
     // HACK_END
-    cy.contains('.cy-begin-date', case2.billings.billing2.beginDate).click();
     cy.get('.cy-hw-meter-serial').should('have.length', 1);
     cy.contains('.cy-item-tariff', groupParams.tariffs.tariff2.name).should('exist');
     cy.contains(

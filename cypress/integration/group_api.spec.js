@@ -46,8 +46,7 @@ describe('Group API', function() {
       }).then(allUsers => {
         expect(allUsers.status).to.eq(200);
         const users = allUsers.body.array;
-        const { id, updated_at, ...newContact } = users[0];
-        delete newContact['fax'];
+        const { id, updated_at, fax, title, phone, ...newContact } = users[0];
 
         cy.request({
           url: `${Cypress.env('SERVER_URL')}/api/admin/localpools/${groupId}/organization-owner`,
@@ -77,7 +76,7 @@ describe('Group API', function() {
             },
             body: {
               updated_at: ownerAttach.body.updated_at,
-              contact: newContact,
+              contact: { ...newContact, prefix: 'M', preferred_language: 'de' },
             },
           }).then(ownerUpdate => {
             expect(ownerUpdate.status).to.eql(200);

@@ -154,6 +154,7 @@ describe('Group full UI', function() {
       moveIn: true,
       authorization: true,
       meteringPointOperatorName: chance.word(),
+      creditorIdentification: chance.natural(),
       oldSupplierName: chance.word(),
       oldCustomerNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
       oldAccountNumber: `${chance.word()}-${chance.natural({ max: 200000 })}`,
@@ -214,7 +215,7 @@ describe('Group full UI', function() {
       cy.get('select[name="type"]').select('real');
       cy.get('input[name="productSerialnumber"]').type(meterSerial);
       cy.get('select[name="datasource"]').select('standard_profile');
-      cy.get('select[name="converterConstant"]').type('1');
+      cy.get('input[name="converterConstant"]').type('1');
       cy.get('select[name="manufacturerName"]').select('easy_meter');
       cy.get('select[name="edifactMeasurementMethod"]').select('MMR');
       cy.get('select[name="directionNumber"]').select('ZRZ');
@@ -239,7 +240,6 @@ describe('Group full UI', function() {
       calibratedUntil: moment()
         .add(1, 'year')
         .format('DD.MM.YYYY'),
-      converterConstant: chance.natural({ max: 300 }),
       locationDescription: chance.sentence(),
       directionNumber: 'ERZ',
       productSerialnumber: chance.natural({ min: 1000, max: 9999 }),
