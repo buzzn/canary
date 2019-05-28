@@ -10,10 +10,10 @@
   },
   "devDependencies": {
     "chance": "^1.0.18",
-    "cypress": "^3.2.0",
+    "cypress": "^3.3.1",
     "eslint": "^5.16.0",
     "omit-deep-lodash": "^1.1.4",
-    "prettier": "1.16.3"
+    "prettier": "1.17.1"
   },
   "prettier": {
     "singleQuote": true,
